@@ -1,5 +1,7 @@
 #!/usr/bin/python3
 import json
+import importlib
+from models.user import User
 
 class FileStorage:
     __file_path = "file.json"
@@ -23,9 +25,13 @@ class FileStorage:
                 obj_dict = json.load(file)
                 for key, value in obj_dict.items():
                     class_name, obj_id = key.split('.')
-                    module = __import__('models.base_model', fromlist=[class_name])
-                    class_ = getattr(module, class_name)
-                    obj_instance = class_(**value)
+                    if class_name == "User":
+                        User = getattr(importlib.import_module('models.user'), 'User')
+                        obj_instance = User(**value)
+                    else:
+                        module = importlib.import_module('models.base_model')
+                        class_ = getattr(module, class_name)
+                        obj_instance = class_(**value)
                     FileStorage.__objects[key] = obj_instance
         except FileNotFoundError:
             pass
