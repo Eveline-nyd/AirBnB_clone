@@ -114,51 +114,53 @@ class HBNBCommand(cmd.Cmd):
         """
         Updates an instance based on the class name and id by adding or updating attributes
         """
-        args = arg.split()
-        if not args:
+        argl = parse(arg)
+        objdict = storage.all()
+
+        if len(argl) == 0:
             print("** class name missing **")
-            return
+            return False
         
-        try:
-            cls_name = arg[0]
-            objs = storage.all()
-            if cls_name not in [cls.__name__ for cls in BaseModel.__subclasses__()]:
-                print("** class doesn't exist **")
-                return
-            
-            if len(args) < 2:
-                print("** instance id missing **")
-                return
-            
-            key = "{}.{}".format(cls_name, args[1])
-            obj = objs.get(key)
-            if not obj:
-                print("** no instance found **")
-                return
-            
-            if len(args) < 3:
-                print("** attribute name missing **")
-                return
-            
-            if len(args) < 4:
-                print("** value missing **")
-                return
-            
-            attr_name = args[2]
-            attr_value = ' '.join(args[3:])
-
-            if hasattr(obj, attr_name) and attr_name not in  ['id', 'created_at', 'updated_at']:
-                attr_type = type(getattr(obj, attr_name))
-                try:
-                    setattr(obj, attr_name, attr_type(attr_value.strip('"')))
-                    storage.save()
-                except ValueError:
-                    print("** invalid value **")
-            else:
-                print("** attribute doesn't exist **")
-        except NameError:
+        if argl[0] not in HBNBCommand.__classes:
             print("** class doesn't exist **")
-
+            return False
+        
+        if len(argl) == 1:
+            print("** instance id missing **")
+            return False
+        
+        if "{}.{}".format(argl[0], argl[1]) not in objdict.keys():
+            print("** no instance found **")
+            return False
+        
+        if len(argl) == 2:
+            print("** attribute name missing **")
+            return False
+        
+        if len(argl) == 3:
+            try:
+                type(eval(argl[2])) != dict
+            except NameError:
+                print("** value missing **")
+                return False
+            
+        if len(argl) == 4:
+            obj = objdict["{}.{}".format(argl[0], argl[1])]
+            if argl[2] in obj.__class__.__dict__.keys():
+                valtype = type(obj.__class__.__dict__[argl[2]])
+                obj.__dict__[argl[2]] = valtype(argl[3])
+            else:
+                obj.__dict__[argl[2]] = argl[3]
+        elif type(eval(argl[2])) == dict:
+            obj = objdict["{}.{}".format(argl[0], argl[1])]
+            for k, v in eval(argl[2]).items():
+                if (k in obj.__class__.__dict__.keys() and type(obj.__class__.__dict__[k]) in {str, int, float}):
+                    valtype = type(obj.__class__.__dict__[k])
+                    obj.__dict__[k] = valtype(v)
+                else:
+                    obj.__dict__[k] = v
+        storage.save()
+        
     def do_quit(self, arg):
         """Quit command to exit the program"""
         return True
