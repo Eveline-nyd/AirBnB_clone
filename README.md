@@ -19,4 +19,5 @@ This project aims to create the foundation for a larger AirBnB clone web applica
 
 ## Contributors
 [**Brian Wagura**](https://github.com/brian-wagura)
+[**Eveline Gambo**](https://github.com/Eveline-nyd)
 
