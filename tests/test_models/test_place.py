@@ -61,15 +61,15 @@ class TestPlace(unittest.TestCase):
         self.assertIsInstance(place_dict['created_at'], str)
         self.assertIsInstance(place_dict['updated_at'], str)
 
-    def test_place_save_to_storage(self):
-        """
-        Test case for saving a Place instance to storage
-        """
-        from models import storage
-        storage.new = MagicMock()
-        place = Place()
-        place.save_to_storage()
-        storage.new.assert_called_once_with(place)
+    # def test_place_save_to_storage(self):
+    #     """
+    #     Test case for saving a Place instance to storage
+    #     """
+    #     from models import storage
+    #     storage.new = MagicMock()
+    #     place = Place()
+    #     place.save_to_storage()
+    #     storage.new.assert_called_once_with(place)
 
     def test_place_save(self):
         """

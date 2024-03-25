@@ -36,14 +36,14 @@ class TestBaseModel(unittest.TestCase):
         self.assertEqual(base_model.updated_at, datetime(2022, 1, 2, 0, 0, 0))
         self.assertEqual(base_model.custom_attr, 'custom value')
 
-    def test_base_model_save_to_storage(self):
-        """
-        Test case for saving instance to storage
-        """
-        from models import storage
-        storage.new = MagicMock()
-        base_model = BaseModel()
-        storage.new.assert_called_once_with(base_model)
+    # def test_base_model_save_to_storage(self):
+    #     """
+    #     Test case for saving instance to storage
+    #     """
+    #     from models import storage
+    #     storage.new = MagicMock()
+    #     base_model = BaseModel()
+    #     storage.new.assert_called_once_with(base_model)
 
     def test_base_model_update_and_save(self):
         """

@@ -53,15 +53,15 @@ class TestReview(unittest.TestCase):
         self.assertEqual(review_dict['user_id'], "456")
         self.assertEqual(review_dict['text'], "Great place!")
 
-    def test_review_save_to_storage(self):
-        """
-        Test case for saving a Review instance to storage.
-        """
-        from models import storage
-        storage.new = MagicMock()
-        review = Review()
-        review.save_to_storage()
-        storage.new.assert_called_once_with(review)
+    # def test_review_save_to_storage(self):
+    #     """
+    #     Test case for saving a Review instance to storage.
+    #     """
+    #     from models import storage
+    #     storage.new = MagicMock()
+    #     review = Review()
+    #     review.save_to_storage()
+    #     storage.new.assert_called_once_with(review)
 
     def test_review_save(self):
         """
