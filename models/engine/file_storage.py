@@ -28,6 +28,12 @@ class FileStorage:
                     if class_name == "User":
                         User = getattr(importlib.import_module('models.user'), 'User')
                         obj_instance = User(**value)
+                    elif class_name == "Place":
+                        Place = getattr(importlib.import_module('models.place'), 'Place')
+                        obj_instance = Place(**value)
+                    elif class_name == "Review":
+                        Review = getattr(importlib.import_module('models.review'), 'Review')
+                        obj_instance = Review(**value)
                     else:
                         module = importlib.import_module('models.base_model')
                         class_ = getattr(module, class_name)
